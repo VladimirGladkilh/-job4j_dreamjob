@@ -14,7 +14,10 @@ public class CandidatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        Store.instOf().save(new Candidate(0, req.getParameter("fio")));
+        Store.instOf().save(new Candidate(
+                Integer.valueOf(req.getParameter("id")),
+                req.getParameter("fio")));
+
         resp.sendRedirect(req.getContextPath() + "/candidates.jsp");
     }
 

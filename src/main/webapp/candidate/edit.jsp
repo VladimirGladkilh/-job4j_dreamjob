@@ -21,17 +21,28 @@
     <title>Работа мечты</title>
 </head>
 <body>
+<%
+    String id = request.getParameter("id");
+    Candidate candidate = new Candidate(0, "");
+    if (id != null) {
+        candidate = Store.instOf().findCandidateById(Integer.valueOf(id));
+    }
+%>
 <div class="container pt-3">
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новый кандидат.
+                <% if (id == null) { %>
+                Новая вакансия.
+                <% } else { %>
+                Редактирование вакансии.
+                <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidate/save" method="post">
+                <form action="<%=request.getContextPath()%>/candidate/save?id=<%=candidate.getId()%>" method="post">
                     <div class="form-group">
-                        <label>ФИО</label>
-                        <input type="text" class="form-control" name="fio">
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="fio" value="<%=candidate.getName()%>">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                     <button type="button" class="btn btn-primary" name="back" onclick="history.back()">back</button>
