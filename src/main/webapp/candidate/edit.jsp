@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="store.Store" %>
-<%@ page import="model.Post" %>
+<%@ page import="model.Candidate" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,12 +25,12 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новая вакансия.
+                Новый кандидат.
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <label>Имя</label>
+                        <label>ФИО</label>
                         <input type="text" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
