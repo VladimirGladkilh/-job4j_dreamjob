@@ -10,7 +10,7 @@ public class CandidateTest extends TestCase {
         candidate.setLogin("User1");
         Candidate candidate2 = new Candidate();
         candidate2.setLogin("User2");
-        Assert.assertTrue(!candidate.equals(candidate2));
+        Assert.assertFalse(candidate.equals(candidate2));
     }
 
     public void testTestEquals() {
