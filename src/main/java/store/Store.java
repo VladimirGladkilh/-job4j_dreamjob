@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Store {
 
     private static AtomicInteger POST_ID = new AtomicInteger(4);
+    private static AtomicInteger CANDIDAT_ID = new AtomicInteger(4);
 
     private static final Store INST = new Store();
 
@@ -45,5 +46,10 @@ public class Store {
     public void save(Post post) {
         post.setId(POST_ID.incrementAndGet());
         posts.put(post.getId(), post);
+    }
+
+    public void save(Candidate candidate) {
+        candidate.setId(CANDIDAT_ID.incrementAndGet());
+        candidates.put(candidate.getId(), candidate);
     }
 }
