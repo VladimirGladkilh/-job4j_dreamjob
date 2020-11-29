@@ -1,7 +1,6 @@
 package servlet;
 
 import model.Candidate;
-import model.Post;
 import store.Store;
 
 import javax.servlet.ServletException;
@@ -14,11 +13,19 @@ public class CandidatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        Store.instOf().save(new Candidate(
-                Integer.valueOf(req.getParameter("id")),
-                req.getParameter("fio")));
+        Store.instOf().save(
+                new Candidate(
+                        Integer.parseInt(req.getParameter("id")),
+                        req.getParameter("fio")
+                )
+        );
 
-        resp.sendRedirect(req.getContextPath() + "/candidates.jsp");
+        resp.sendRedirect(req.getContextPath() + "/candidates.do");
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("candidates", Store.instOf().findAllCandidates());
+        req.getRequestDispatcher("candidates.jsp").forward(req, resp);
+    }
 }
