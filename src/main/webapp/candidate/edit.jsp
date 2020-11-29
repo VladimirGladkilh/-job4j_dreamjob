@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="store.MemStore" %>
 <%@ page import="model.Candidate" %>
+<%@ page import="store.PsqlStore" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,7 +25,7 @@
     String id = request.getParameter("id");
     Candidate candidate = new Candidate(0, "");
     if (id != null) {
-        candidate = MemStore.instOf().findCandidateById(Integer.valueOf(id));
+        candidate = PsqlStore.instOf().findCandidateById(Integer.valueOf(id));
     }
 %>
 <div class="container pt-3">
@@ -42,7 +42,7 @@
                 <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="fio" value="<%=candidate.getName()%>">
+                        <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                     <button type="button" class="btn btn-primary" name="back" onclick="history.back()">back</button>

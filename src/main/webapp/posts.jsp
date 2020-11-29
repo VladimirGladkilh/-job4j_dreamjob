@@ -27,6 +27,11 @@
             <div class="card-header">
                 Вакансии
             </div>
+            <div class="card-footer">
+                <a href='<c:url value="/"/>'>
+                    Домой
+                </a>
+            </div>
             <div class="card-body">
                 <table class="table">
                     <thead>
@@ -49,6 +54,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
     </div>
 </div>
