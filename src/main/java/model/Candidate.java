@@ -1,14 +1,40 @@
 package model;
 
+import store.PsqlStore;
+
 import java.util.Objects;
 
 public class Candidate {
     private int id;
     private String name;
+    private Photo photo;
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
 
     public Candidate(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Candidate(int id, String name, int photoid) {
+        this.id = id;
+        this.name = name;
+        if (photoid > 0) {
+            this.photo = PsqlStore.instOf().findPhotoById(photoid);
+        } else {
+            this.photo = new Photo(0, "");
+        }
+    }
+    public Candidate(int id, String name, Photo photo) {
+        this.id = id;
+        this.name = name;
+        this.photo = photo;
     }
 
     public int getId() {

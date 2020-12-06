@@ -9,6 +9,11 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>job4j_dreamjob</name>
+    <properties>
+        <!-- necessary for intellij to function -->
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.hamcrest</groupId>
@@ -42,6 +47,11 @@
             <version>2.7.0</version>
         </dependency>
         <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
             <groupId>net.jcip</groupId>
             <artifactId>jcip-annotations</artifactId>
             <version>1.0</version>
@@ -60,6 +70,14 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

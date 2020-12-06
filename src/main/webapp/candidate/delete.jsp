@@ -39,26 +39,18 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                Новый кандидат.
-                <% } else { %>
-                Редактирование кандидата.
-                <% } %>
+                Удаление кандидата. Подтвердите действие
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post"
-                     enctype="multipart/form-data" >
+                <form action="<%=request.getContextPath()%>/candidates.do?deleteid=<%=candidate.getId()%>" method="post"
+                      enctype="multipart/form-data" >
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
-                        <a href="<%=request.getContextPath()%>/download?path=<%=photo.getPath()%>">Download</a>
                         <img src="<%=request.getContextPath()%>/download?path=<%=photo.getPath()%>" width="100px" height="100px"/>
                     </div>
-                    <div class="checkbox">
-                    <input type="file" class="form-control" name="image" >
-                    </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                    <button type="button" class="btn btn-primary" name="back" onclick="history.back()">back</button>
+                    <button type="submit" class="btn btn-primary">Удалить</button>
+                    <button type="button" class="btn btn-primary" name="Cansel" onclick="history.back()">back</button>
                 </form>
             </div>
         </div>

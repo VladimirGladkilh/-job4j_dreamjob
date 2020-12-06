@@ -49,6 +49,13 @@
                                 </a>
                                 <c:out value="${can.name}"/>
                             </td>
+                            <td>
+                                <a href='<c:url value="/download?path=${can.photo.path}"/>'>Download</a>
+                                <img src='<c:url value="/download?path=${can.photo.path}"/>' width="100px" height="100px"/>
+                            </td>
+                            <td><a href='<c:url value="/candidate/delete.jsp?id=${can.id}"/>'>
+                                <i class="fa fa-remove mr-3"></i>
+                            </a></td>
                         </tr>
                     </c:forEach>
                     </tbody>
