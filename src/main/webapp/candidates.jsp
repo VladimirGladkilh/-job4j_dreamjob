@@ -21,22 +21,38 @@
 </head>
 <body>
 <div class="container pt-3">
-
+    <div class="row">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do">Кандидаты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
+            </li>
+        </ul>
+    </div>
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
                 Кандидаты
             </div>
-            <div class="card-footer">
-                <a href='<c:url value="/"/>'>
-                    Домой
-                </a>
-            </div>
+
             <div class="card-body">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Названия</th>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">Фото</th>
+                        <th scope="col">Удалить</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,8 +66,9 @@
                                 <c:out value="${can.name}"/>
                             </td>
                             <td>
-                                <a href='<c:url value="/download?path=${can.photo.path}"/>'>Download</a>
-                                <img src='<c:url value="/download?path=${can.photo.path}"/>' width="100px" height="100px"/>
+                        <img src='<c:url value="/download?path=${can.photo.path}"/>' width="100px" height="100px"/>
+                        <a href='<c:url value="/download?path=${can.photo.path}"/>'>Скачать</a>
+
                             </td>
                             <td><a href='<c:url value="/candidate/delete.jsp?id=${can.id}"/>'>
                                 <i class="fa fa-remove mr-3"></i>
