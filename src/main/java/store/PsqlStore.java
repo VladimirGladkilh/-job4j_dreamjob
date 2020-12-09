@@ -1,6 +1,7 @@
 package store;
 
 import model.Photo;
+import model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import model.Candidate;
 import model.Post;
@@ -144,6 +145,22 @@ public class PsqlStore implements Store {
             LOG.error(e.getMessage());
         }
         return posts;
+    }
+
+    @Override
+    public void delete(Post post) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("DELETE FROM post where id = ?")
+        ) {
+            ps.setInt(1, post.getId());
+            try {
+                ps.executeQuery();
+            } catch (SQLException s) {
+                LOG.error(s.getMessage());
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
     }
 
     @Override
@@ -299,6 +316,121 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("DELETE FROM photo where id = ?")
         ) {
             ps.setInt(1, photo.getId());
+            try {
+                ps.executeQuery();
+            } catch (SQLException s) {
+                LOG.error(s.getMessage());
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public Collection<User> findAllUsers() {
+        List<User> userList = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    userList.add(new User(it.getInt("id"), it.getString("name"),
+                            it.getString("email"), it.getString("password")));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+        return userList;
+    }
+
+    @Override
+    public User save(User user) {
+        if (user.getId() == 0) {
+            return create(user);
+        } else {
+            update(user);
+            return user;
+        }
+    }
+
+    private void update(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("UPDATE users set name = ?, email = ?, password = ? where id = ?", PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getId());
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+    }
+
+    private User create(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO users(name, email, password ) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+        return user;
+    }
+
+    @Override
+    public User findUserById(int id) {
+        User user = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users where id = ?")
+        ) {
+            ps.setInt(1, id);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    user = new User(it.getInt("id"), it.getString("name"),
+                            it.getString("email"), it.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+        return user;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users where email = ?")
+        ) {
+            ps.setString(1, email);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    user = new User(it.getInt("id"), it.getString("name"),
+                            it.getString("email"), it.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+        return user;
+    }
+
+    @Override
+    public void delete(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("DELETE FROM users where id = ?")
+        ) {
+            ps.setInt(1, user.getId());
             try {
                 ps.executeQuery();
             } catch (SQLException s) {

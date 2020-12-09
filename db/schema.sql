@@ -5,13 +5,18 @@ CREATE TABLE post (
 
 CREATE TABLE candidate (
    id SERIAL PRIMARY KEY,
-   name TEXT
+   name TEXT,
+   photoId int;
 );
-
-Alter TABLE candidate add column photoId int;
-
 
 CREATE TABLE photo (
    id SERIAL PRIMARY KEY,
    path TEXT
 );
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    email TEXT,
+    password TEXT
+)

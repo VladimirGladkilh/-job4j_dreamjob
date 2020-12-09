@@ -3,6 +3,7 @@ package store;
 import model.Candidate;
 import model.Photo;
 import model.Post;
+import model.User;
 
 import java.util.Collection;
 
@@ -10,6 +11,7 @@ public interface Store {
     Collection<Post> findAllPosts();
     void save(Post post);
     Post findById(int id);
+    void delete(Post post);
 
     Collection<Candidate> findAllCandidates();
     void save(Candidate candidate);
@@ -20,5 +22,11 @@ public interface Store {
     Photo save(Photo photo);
     Photo findPhotoById(int id);
     void delete(Photo photo);
+
+    Collection<User> findAllUsers();
+    User save(User user);
+    User findUserById(int id);
+    User findUserByEmail(String name);
+    void delete(User user);
 
 }
