@@ -55,12 +55,12 @@ public class UploadServlet extends HttpServlet {
                         PsqlStore.instOf().save(new Photo(0,
                                 file.getPath()));
                     } catch (Exception e) {
-                        LOG.error(e.getMessage());
+                        LOG.error(e.getMessage(), e);
                     }
                 }
             }
         } catch (FileUploadException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         doGet(req, resp);
     }

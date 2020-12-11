@@ -23,7 +23,7 @@ public class DownloadServlet extends HttpServlet {
             try (FileInputStream in = new FileInputStream(file)) {
                 resp.getOutputStream().write(in.readAllBytes());
             } catch (Exception e) {
-                LOG.error(e.getMessage());
+                LOG.error(e.getMessage(), e);
             }
         }
 

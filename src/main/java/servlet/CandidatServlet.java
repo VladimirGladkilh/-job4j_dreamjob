@@ -29,7 +29,7 @@ public class CandidatServlet extends HttpServlet {
         boolean isMultipart = ServletFileUpload.isMultipartContent(req);
         if (!isMultipart) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            System.out.println("SC_BAD_REQUEST");
+            LOG.error("SC_BAD_REQUEST");
             return;
         }
 
@@ -81,7 +81,7 @@ public class CandidatServlet extends HttpServlet {
                 out.write(part.getInputStream().readAllBytes());
                 photo = PsqlStore.instOf().save(new Photo(photo.getId(), fileName));
             } catch (Exception e) {
-                LOG.error(e.getMessage());
+                LOG.error(e.getMessage(), e);
             }
         }
         return photo;

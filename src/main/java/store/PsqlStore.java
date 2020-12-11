@@ -31,13 +31,13 @@ public class PsqlStore implements Store {
         )) {
             cfg.load(io);
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
             throw new IllegalStateException(e);
         }
         try {
             Class.forName(cfg.getProperty("jdbc.driver"));
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
             throw new IllegalStateException(e);
         }
         pool.setDriverClassName(cfg.getProperty("jdbc.driver"));
@@ -69,7 +69,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return posts;
     }
@@ -86,7 +86,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return candidates;
     }
@@ -112,7 +112,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return post;
     }
@@ -125,7 +125,7 @@ public class PsqlStore implements Store {
             ps.setInt(2, post.getId());
             ps.execute();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
     }
 
@@ -142,7 +142,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return posts;
     }
@@ -153,13 +153,9 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("DELETE FROM post where id = ?")
         ) {
             ps.setInt(1, post.getId());
-            try {
-                ps.executeQuery();
-            } catch (SQLException s) {
-                LOG.error(s.getMessage());
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage());
+            ps.executeQuery();
+        } catch (SQLException s) {
+            LOG.error(s.getMessage(), s);
         }
     }
 
@@ -184,7 +180,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return candidate;
     }
@@ -198,7 +194,7 @@ public class PsqlStore implements Store {
             ps.setInt(3, candidate.getId());
             ps.execute();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
     }
     @Override
@@ -214,7 +210,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return candidate;
     }
@@ -225,13 +221,9 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("DELETE FROM candidate where id = ?")
         ) {
             ps.setInt(1, candidate.getId());
-            try {
-                ps.executeQuery();
-            } catch (SQLException s) {
-                LOG.error(s.getMessage());
-            }
+            ps.executeQuery();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
     }
 
@@ -247,7 +239,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return photos;
     }
@@ -274,7 +266,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return photo;
     }
@@ -287,7 +279,7 @@ public class PsqlStore implements Store {
             ps.setInt(2, photo.getId());
             ps.execute();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return photo;
     }
@@ -305,7 +297,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return photo;
     }
@@ -316,13 +308,9 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("DELETE FROM photo where id = ?")
         ) {
             ps.setInt(1, photo.getId());
-            try {
-                ps.executeQuery();
-            } catch (SQLException s) {
-                LOG.error(s.getMessage());
-            }
+            ps.executeQuery();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
     }
 
@@ -339,7 +327,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return userList;
     }
@@ -364,7 +352,7 @@ public class PsqlStore implements Store {
             ps.setInt(4, user.getId());
             ps.execute();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
     }
 
@@ -401,7 +389,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return user;
     }
@@ -420,7 +408,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return user;
     }
@@ -431,13 +419,9 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("DELETE FROM users where id = ?")
         ) {
             ps.setInt(1, user.getId());
-            try {
-                ps.executeQuery();
-            } catch (SQLException s) {
-                LOG.error(s.getMessage());
-            }
+            ps.executeQuery();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
     }
 }
