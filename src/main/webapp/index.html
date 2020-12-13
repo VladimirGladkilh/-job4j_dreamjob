@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <form>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Имя:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" placeholder="Enter name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="fam">Фамилия:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="fam" placeholder="Enter fam">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="radio">Пол:</label>
+            <label class="radio-inline" id="radio">
+                <input type="radio" name="optradio" checked>М
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optradio" >Ж
+            </label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2"  for="comment">Описание:</label>
+            <textarea class="form-control" rows="5" id="comment"></textarea>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-0">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+        <div class="container">
+            <h2>Таблица</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Пол</th>
+                    <th>Описание</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Иван</td>
+                    <td>Иванов</td>
+                    <td>М</td>
+                    <td>Описание про Ивана</td>
+                </tr>
+                <tr>
+                    <td>Петр</td>
+                    <td>Петров</td>
+                    <td>М</td>
+                    <td>Описание про Петра Петрова</td>
+                </tr>
+                <tr>
+                    <td>Маша</td>
+                    <td>Распутина</td>
+                    <td>Ж</td>
+                    <td>Описание про Ивана и Машу</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+</body>
+</html>
