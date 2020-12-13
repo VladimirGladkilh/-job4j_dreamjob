@@ -15,15 +15,19 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) sreq;
         HttpServletResponse resp = (HttpServletResponse) sresp;
         String uri = req.getRequestURI();
-        if (uri.endsWith("auth.do")) {
+        if (!uri.endsWith("reg.do")) {
+            if (uri.endsWith("auth.do") ) {
+                chain.doFilter(sreq, sresp);
+                return;
+            }
+            if (req.getSession().getAttribute("user") == null) {
+                resp.sendRedirect(req.getContextPath() + "/login.jsp");
+                return;
+            }
             chain.doFilter(sreq, sresp);
-            return;
+        } else {
+            chain.doFilter(sreq, sresp);
         }
-        if (req.getSession().getAttribute("user") == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
-            return;
-        }
-        chain.doFilter(sreq, sresp);
     }
 
     @Override

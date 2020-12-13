@@ -10,28 +10,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class AuthServlet extends HttpServlet {
+public class RegServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
+        String name = req.getParameter("name");
         User user = PsqlStore.instOf().findUserByEmail(email);
-        if ("root@local".equals(email) && "root".equals(password)) {
+
+        if (user == null) {
+            User newUser = new User();
+            newUser.setName(name);
+            newUser.setEmail(email);
+            newUser.setPassword(password);
+            newUser = PsqlStore.instOf().save(newUser);
             HttpSession sc = req.getSession();
-            User admin = new User();
-            admin.setName("Admin");
-            admin.setEmail(email);
-            sc.setAttribute("user", admin);
-            resp.sendRedirect(req.getContextPath() + "/posts.do");
+            sc.setAttribute("user", newUser);
+            resp.sendRedirect(req.getContextPath() + "/index.do");
         } else {
             if (user != null && user.getPassword().equals(password)) {
                 HttpSession sc = req.getSession();
                 sc.setAttribute("user", user);
                 resp.sendRedirect(req.getContextPath() + "/index.do");
             } else {
-                req.setAttribute("error", "Не верный email или пароль");
-                req.getRequestDispatcher("login.jsp").forward(req, resp);
+                req.setAttribute("error", "Email занят");
+                req.getRequestDispatcher("reg.jsp").forward(req, resp);
             }
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("reg.jsp").forward(req, resp);
     }
 }
