@@ -18,6 +18,7 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Работа мечты</title>
+    <link rel="icon" type="image/png" href="favicon.ico"/>
 </head>
 <body>
 <div class="container pt-3">
@@ -47,7 +48,7 @@
         <div class="card" style="width: 100%">
 
             <div class="card-header">
-                Вакансии
+                Города
             </div>
 
             <div class="card-body">
@@ -59,13 +60,13 @@
                     </thead>
                     <tbody>
 
-                    <c:forEach items="${posts}" var="post">
+                    <c:forEach items="${city}" var="city">
                         <tr>
                             <td>
-                                <a href='<c:url value="/post/edit.jsp?id=${post.id}"/>'>
+                                <a href='<c:url value="/city/edit.jsp?id=${city.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
-                                <c:out value="${post.name}"/>
+                                <c:out value="${city.name}"/>
                             </td>
                         </tr>
                     </c:forEach>

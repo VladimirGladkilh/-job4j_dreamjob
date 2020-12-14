@@ -1,9 +1,6 @@
 package store;
 
-import model.Candidate;
-import model.Photo;
-import model.Post;
-import model.User;
+import model.*;
 
 import java.util.Collection;
 
@@ -29,4 +26,8 @@ public interface Store {
     User findUserByEmail(String name);
     void delete(User user);
 
+    Collection<City> findAllCities();
+    City save(City city);
+    City findCityById(int id);
+    void delete(City city);
 }

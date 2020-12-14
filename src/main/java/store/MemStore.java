@@ -2,10 +2,7 @@ package store;
 
 
 
-import model.Candidate;
-import model.Photo;
-import model.Post;
-import model.User;
+import model.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -139,6 +136,26 @@ public class MemStore implements Store {
     @Override
     public void delete(User user) {
         users.remove(user);
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        return null;
+    }
+
+    @Override
+    public City save(City city) {
+        return null;
+    }
+
+    @Override
+    public City findCityById(int id) {
+        return null;
+    }
+
+    @Override
+    public void delete(City city) {
+
     }
 
 

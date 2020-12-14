@@ -1,10 +1,7 @@
 package store;
 
-import model.Photo;
-import model.User;
+import model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
-import model.Candidate;
-import model.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,10 +166,11 @@ public class PsqlStore implements Store {
     }
     private Candidate create(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate(name, photoId) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate(name, photoId, cityId) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
             ps.setInt(2, candidate.getPhoto() != null ? candidate.getPhoto().getId() : 0);
+            ps.setInt(3, candidate.getCity() != null ? candidate.getCity().getId() : 0);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -187,11 +185,12 @@ public class PsqlStore implements Store {
 
     private void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("UPDATE candidate set name = ?, photoId= ? where id = ?", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps =  cn.prepareStatement("UPDATE candidate set name = ?, photoId = ?, cityId = ? where id = ?", PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
             ps.setInt(2, candidate.getPhoto() != null ? candidate.getPhoto().getId() : 0);
-            ps.setInt(3, candidate.getId());
+            ps.setInt(3, candidate.getCity() != null ? candidate.getCity().getId() : 0);
+            ps.setInt(4, candidate.getId());
             ps.execute();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -419,6 +418,93 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("DELETE FROM users where id = ?")
         ) {
             ps.setInt(1, user.getId());
+            ps.executeQuery();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        List<City> cities = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM city")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    cities.add(new City(it.getInt("id"), it.getString("name")));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return cities;
+    }
+
+    @Override
+    public City save(City city) {
+        if (city.getId() == 0) {
+            return create(city);
+        } else {
+            update(city);
+            return city;
+        }
+    }
+
+    private void update(City city) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("UPDATE city set name = ? where id = ?", PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, city.getName());
+            ps.setInt(2, city.getId());
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+
+    private City create(City city) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO city(name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, city.getName());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    city.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return city;
+    }
+
+    @Override
+    public City findCityById(int id) {
+        City city = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM city where id = ?")
+        ) {
+            ps.setInt(1, id);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    city = new City(it.getInt("id"), it.getString("name"));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return city;
+    }
+
+    @Override
+    public void delete(City city) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("DELETE FROM city where id = ?")
+        ) {
+            ps.setInt(1, city.getId());
             ps.executeQuery();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);

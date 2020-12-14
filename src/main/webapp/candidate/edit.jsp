@@ -2,6 +2,7 @@
 <%@ page import="model.Candidate" %>
 <%@ page import="model.Photo" %>
 <%@ page import="store.PsqlStore" %>
+<%@ page import="model.City" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -22,18 +23,26 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <title>Работа мечты</title>
+    <link rel="icon" type="image/png" href="favicon.ico"/>
 </head>
 <body>
 <%
     String id = request.getParameter("id");
     Candidate candidate = new Candidate(0, "", 0);
     Photo photo = new Photo(0, "");
+    City city = new City(0, "");
     if (id != null) {
         candidate = PsqlStore.instOf().findCandidateById(Integer.valueOf(id));
-        if (candidate != null && candidate.getPhoto() != null) {
-            photo = candidate.getPhoto();
+        if (candidate != null) {
+            if (candidate.getPhoto() != null) {
+                photo = candidate.getPhoto();
+            }
+            if (candidate.getCity() != null) {
+                city = candidate.getCity();
+            }
         }
     }
+
 %>
 <div class="container pt-3">
     <div class="row">
@@ -49,6 +58,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/city.do">Города</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
@@ -75,6 +87,9 @@
                     </div>
                     <div class="checkbox">
                     <input type="file" class="form-control" name="image" >
+                    </div>
+                    <div class="pick">
+
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                     <button type="button" class="btn btn-primary" name="back" onclick="history.back()">back</button>

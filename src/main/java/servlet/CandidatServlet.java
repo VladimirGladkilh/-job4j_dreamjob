@@ -1,6 +1,7 @@
 package servlet;
 
 import model.Candidate;
+import model.City;
 import model.Photo;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -58,14 +59,18 @@ public class CandidatServlet extends HttpServlet {
 
     private void createCandidate(HttpServletRequest req, Candidate candidate) throws IOException, ServletException {
         Photo photo = createPhoto(req, candidate);
+        City city = PsqlStore.instOf().findCityById(Integer.parseInt(req.getParameter("cityId")));
         PsqlStore.instOf().save(
                 new Candidate(
                         Integer.parseInt(req.getParameter("id")),
                         req.getParameter("name"),
-                        photo
+                        photo,
+                        city
                 )
         );
     }
+
+
 
 
     private Photo createPhoto(HttpServletRequest req, Candidate candidate) throws IOException, ServletException {
