@@ -59,6 +59,7 @@ public class CandidatServlet extends HttpServlet {
 
     private void createCandidate(HttpServletRequest req, Candidate candidate) throws IOException, ServletException {
         Photo photo = createPhoto(req, candidate);
+        System.out.println(req.getParameter("cityId"));
         City city = PsqlStore.instOf().findCityById(Integer.parseInt(req.getParameter("cityId")));
         PsqlStore.instOf().save(
                 new Candidate(

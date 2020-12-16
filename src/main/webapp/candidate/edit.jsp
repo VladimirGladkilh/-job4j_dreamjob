@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8" session="true"%>
+<%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ page import="model.Candidate" %>
 <%@ page import="model.Photo" %>
 <%@ page import="store.PsqlStore" %>
@@ -16,16 +16,40 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
 
     <title>Работа мечты</title>
-    <link rel="icon" type="image/png" href="favicon.ico"/>
+    <link rel="icon" type="image/png" href="/dreamjob/favicon.ico"/>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        function getCities() {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/dreamjob/city.do",
+                dataType: "json"
+            })
+                .done(function (data) {
+                    let cities = "<option value=\"\"></option>";
+                    for (let i = 0; i < data.length; i++) {
+                        cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
+                    }
+                    $('#city').html(cities);
+                })
+                .fail(function (err) {
+                    alert("err" + err.message);
+                })
+        }
+
+    </script>
 </head>
-<body>
+<body onload="getCities()">
 <%
     String id = request.getParameter("id");
     Candidate candidate = new Candidate(0, "", 0);
@@ -63,7 +87,8 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/city.do">Города</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> |
+                    Выйти</a>
             </li>
         </ul>
     </div>
@@ -78,18 +103,21 @@
             </div>
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post"
-                     enctype="multipart/form-data" >
+                      enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
                         <a href="<%=request.getContextPath()%>/download?path=<%=photo.getPath()%>">Download</a>
-                        <img src="<%=request.getContextPath()%>/download?path=<%=photo.getPath()%>" width="100px" height="100px"/>
+                        <img src="<%=request.getContextPath()%>/download?path=<%=photo.getPath()%>" width="100px"
+                             height="100px"/>
                     </div>
                     <div class="checkbox">
-                    <input type="file" class="form-control" name="image" >
+                        <input type="file" class="form-control" name="image">
                     </div>
-                    <div class="pick">
-
+                    <div class="form-group">
+                        <label for="city">Город:</label>
+                        <select class="form-control" id="city" name="cityId">
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                     <button type="button" class="btn btn-primary" name="back" onclick="history.back()">back</button>
