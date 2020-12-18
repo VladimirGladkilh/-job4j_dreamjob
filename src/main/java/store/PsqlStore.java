@@ -79,7 +79,7 @@ public class PsqlStore implements Store {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"), it.getInt("photoid")));
+                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"), it.getInt("photoid"), it.getInt("cityid")));
                 }
             }
         } catch (Exception e) {
@@ -205,7 +205,8 @@ public class PsqlStore implements Store {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    candidate = new Candidate(it.getInt("id"), it.getString("name"), it.getInt("photoid"));
+                    candidate = new Candidate(it.getInt("id"), it.getString("name")
+                            , it.getInt("photoid"), it.getInt("cityId"));
                 }
             }
         } catch (Exception e) {

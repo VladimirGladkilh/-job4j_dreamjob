@@ -27,36 +27,16 @@
 
     <title>Работа мечты</title>
     <link rel="icon" type="image/png" href="/dreamjob/favicon.ico"/>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script>
-        function getCities() {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:8080/dreamjob/city.do",
-                dataType: "json"
-            })
-                .done(function (data) {
-                    let cities = "<option value=\"\"></option>";
-                    for (let i = 0; i < data.length; i++) {
-                        cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
-                    }
-                    $('#city').html(cities);
-                })
-                .fail(function (err) {
-                    alert("err" + err.message);
-                })
-        }
 
-    </script>
 </head>
 <body onload="getCities()">
 <%
     String id = request.getParameter("id");
-    Candidate candidate = new Candidate(0, "", 0);
+    Candidate candidate = new Candidate(0, "", 0, 0);
     Photo photo = new Photo(0, "");
     City city = new City(0, "");
     if (id != null) {
-        candidate = PsqlStore.instOf().findCandidateById(Integer.valueOf(id));
+        candidate = PsqlStore.instOf().findCandidateById(Integer.parseInt(id));
         if (candidate != null) {
             if (candidate.getPhoto() != null) {
                 photo = candidate.getPhoto();
@@ -68,6 +48,32 @@
     }
 
 %>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    function getCities() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/dreamjob/city.do?list=true",
+            dataType: "json"
+        })
+            .done(function (data) {
+                var cityId = <%=city.getId()%>;
+                let cities = "<option value=\"\"></option>";
+                for (let i = 0; i < data.length; i++) {
+                    if (cityId === data[i]['id']) {
+                        cities += "<option value=" + data[i]['id'] + " selected>" + data[i]['name'] + "</option>";
+                    } else {
+                        cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
+                    }
+                }
+                $('#city').html(cities);
+            })
+            .fail(function (err) {
+                alert("err" + err.message);
+            })
+    }
+
+</script>
 <div class="container pt-3">
     <div class="row">
         <ul class="nav">
@@ -115,7 +121,7 @@
                         <input type="file" class="form-control" name="image">
                     </div>
                     <div class="form-group">
-                        <label for="city">Город:</label>
+                        <label for="city">Город: <%=city.getId()%></label>
                         <select class="form-control" id="city" name="cityId">
                         </select>
                     </div>

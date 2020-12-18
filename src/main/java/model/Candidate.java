@@ -18,32 +18,31 @@ public class Candidate {
         this.photo = photo;
     }
 
-    public Candidate(int id, String name) {
-        this.id = id;
-        this.name = name;
+
+    public Candidate(int id, String name, int photoid, int cityId) {
+        Photo photo = new Photo(0, "");
+        if (photoid > 0) {
+            photo = PsqlStore.instOf().findPhotoById(photoid);
+        }
+        City city = new City(0, "");
+        if (cityId > 0) {
+            city = PsqlStore.instOf().findCityById(cityId);
+        }
+        initCandidate(id, name, photo, city);
     }
 
-    public Candidate(int id, String name, int photoid) {
-        this.id = id;
-        this.name = name;
-        if (photoid > 0) {
-            this.photo = PsqlStore.instOf().findPhotoById(photoid);
-        } else {
-            this.photo = new Photo(0, "");
-        }
-    }
-    public Candidate(int id, String name, Photo photo) {
-        this.id = id;
-        this.name = name;
-        this.photo = photo;
-    }
 
     public Candidate(int id, String name, Photo photo, City city) {
+        initCandidate(id, name, photo, city);
+    }
+
+    private void initCandidate(int id, String name, Photo photo, City city) {
         this.id = id;
         this.name = name;
         this.photo = photo;
         this.city = city;
     }
+
 
     public int getId() {
         return id;

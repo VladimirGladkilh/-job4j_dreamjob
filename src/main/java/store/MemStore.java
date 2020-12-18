@@ -30,9 +30,9 @@ public class MemStore implements Store {
         photos.put(1, new Photo(1, "1.png"));
         photos.put(2, new Photo(2, "2.png"));
         photos.put(3, new Photo(3, "2.png"));
-        candidates.put(1, new Candidate(1, "Junior Java", 1));
-        candidates.put(2, new Candidate(2, "Middle Java", 2));
-        candidates.put(3, new Candidate(3, "Senior Java", 3));
+        candidates.put(1, new Candidate(1, "Junior Java", 1, 0));
+        candidates.put(2, new Candidate(2, "Middle Java", 2, 0));
+        candidates.put(3, new Candidate(3, "Senior Java", 3, 0));
         users.put(1, new User(1, "mail1", "First", "123"));
         users.put(2, new User(2, "mail2", "Second", "123"));
         users.put(3, new User(3, "mail3", "Third", "123"));

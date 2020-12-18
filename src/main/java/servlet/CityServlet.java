@@ -29,13 +29,15 @@ public class CityServlet extends HttpServlet {
 
         req.setAttribute("city", PsqlStore.instOf().findAllCities());
         req.setAttribute("user", req.getSession().getAttribute("user"));
-        //req.getRequestDispatcher("city.jsp").forward(req, resp);
-
-        List<City> list = (List<City>) PsqlStore.instOf().findAllCities();
-        ObjectMapper mapper = new ObjectMapper();
-        String string = mapper.writeValueAsString(list);
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("json");
-        resp.getWriter().write(string);
+        if (req.getParameter("list") == null) {
+            req.getRequestDispatcher("city.jsp").forward(req, resp);
+        } else {
+            List<City> list = (List<City>) PsqlStore.instOf().findAllCities();
+            ObjectMapper mapper = new ObjectMapper();
+            String string = mapper.writeValueAsString(list);
+            resp.setCharacterEncoding("UTF-8");
+            resp.setContentType("json");
+            resp.getWriter().write(string);
+        }
     }
 }
