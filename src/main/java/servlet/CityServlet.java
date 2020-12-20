@@ -1,5 +1,6 @@
 package servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.City;
 import store.PsqlStore;
 
@@ -33,18 +34,13 @@ public class CityServlet extends HttpServlet {
             req.getRequestDispatcher("city.jsp").forward(req, resp);
         } else {
             List<City> list = (List<City>) PsqlStore.instOf().findAllCities();
-            StringJoiner sj = new StringJoiner(System.lineSeparator());
-            sj.add("<option value=\"0\"></option>");
-            list.forEach(city -> {
-                if (city.getId() == Integer.parseInt(req.getParameter("list"))) {
-                    sj.add(String.format("<option value=\"%s\" selected>%s</option>", city.getId(), city.getName()));
-                } else {
-                    sj.add(String.format("<option value=\"%s\">%s</option>", city.getId(), city.getName()));
-                }
-            });
+            ObjectMapper mapper = new ObjectMapper();
+            String string = mapper.writeValueAsString(list);
+            System.out.println(string);
             resp.setCharacterEncoding("UTF-8");
-            resp.setContentType("text/plain");
-            resp.getWriter().write(sj.toString());
+            resp.setContentType("json");
+            resp.getWriter().write(string);
+
         }
     }
 }
