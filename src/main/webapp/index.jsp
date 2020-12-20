@@ -40,7 +40,12 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/city.do">Города</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
+                <% if (request.getAttribute("user") != null) {%>
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> |
+                    Выйти</a>
+                <%} else {%>
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                <%}%>
             </li>
         </ul>
     </div>

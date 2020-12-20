@@ -52,9 +52,10 @@
 <script>
     function getCities() {
         $.ajax({
-            type: "GET",
+            type: "OPTIONS",
             url: "http://localhost:8080/dreamjob/city.do?list=true",
-            dataType: "json"
+            dataType: "json",
+            origin: "http://localhost:8080/dreamjob"
         })
             .done(function (data) {
                 var cityId = <%=city.getId()%>;
@@ -93,8 +94,12 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/city.do">Города</a>
             </li>
             <li class="nav-item">
+                <% if (request.getAttribute("user") != null) {%>
                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> |
                     Выйти</a>
+                <%} else {%>
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                <%}%>
             </li>
         </ul>
     </div>
@@ -121,7 +126,7 @@
                         <input type="file" class="form-control" name="image">
                     </div>
                     <div class="form-group">
-                        <label for="city">Город: <%=city.getId()%></label>
+                        <label for="city">Город:</label>
                         <select class="form-control" id="city" name="cityId">
                         </select>
                     </div>
