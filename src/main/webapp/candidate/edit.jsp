@@ -52,22 +52,12 @@
 <script>
     function getCities() {
         $.ajax({
-            type: "OPTIONS",
-            url: "http://localhost:8080/dreamjob/city.do?list=true",
-            dataType: "json",
-            origin: "http://localhost:8080/dreamjob"
+            type: "GET",
+            url: "http://localhost:8080/dreamjob/city.do?list=<%=city.getId()%>",
+            dataType: "text"
         })
             .done(function (data) {
-                var cityId = <%=city.getId()%>;
-                let cities = "<option value=\"\"></option>";
-                for (let i = 0; i < data.length; i++) {
-                    if (cityId === data[i]['id']) {
-                        cities += "<option value=" + data[i]['id'] + " selected>" + data[i]['name'] + "</option>";
-                    } else {
-                        cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
-                    }
-                }
-                $('#city').html(cities);
+                $('#city').html(data);
             })
             .fail(function (err) {
                 alert("err" + err.message);

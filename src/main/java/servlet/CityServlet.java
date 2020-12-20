@@ -1,6 +1,5 @@
 package servlet;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.City;
 import store.PsqlStore;
 
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class CityServlet extends HttpServlet {
     @Override
@@ -33,11 +33,18 @@ public class CityServlet extends HttpServlet {
             req.getRequestDispatcher("city.jsp").forward(req, resp);
         } else {
             List<City> list = (List<City>) PsqlStore.instOf().findAllCities();
-            ObjectMapper mapper = new ObjectMapper();
-            String string = mapper.writeValueAsString(list);
+            StringJoiner sj = new StringJoiner(System.lineSeparator());
+            sj.add("<option value=\"0\"></option>");
+            list.forEach(city -> {
+                if (city.getId() == Integer.parseInt(req.getParameter("list"))) {
+                    sj.add(String.format("<option value=\"%s\" selected>%s</option>", city.getId(), city.getName()));
+                } else {
+                    sj.add(String.format("<option value=\"%s\">%s</option>", city.getId(), city.getName()));
+                }
+            });
             resp.setCharacterEncoding("UTF-8");
-            resp.setContentType("json");
-            resp.getWriter().write(string);
+            resp.setContentType("text/plain");
+            resp.getWriter().write(sj.toString());
         }
     }
 }
